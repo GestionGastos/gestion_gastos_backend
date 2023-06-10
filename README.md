@@ -5,6 +5,7 @@ Requisitos (Requirements):
 
 clonar (Clone):
 - git clone https://github.com/GestionGastos/gestion_gastos_backend.git
+- agregar el archivo .env
 
 Ejecutar docker build para crear la imagen de node desde la raiz del proyecto (Execute docker build to create the node image from the project root):
 - docker build -t budget-backend-server:v1 .
