@@ -10,7 +10,7 @@ clonar (Clone):
 Ejecutar docker build para crear la imagen de node desde la raiz del proyecto (Execute docker build to create the node image from the project root):
 - docker build -t budget-backend-server:v1 .
 
-Instalar las dependencias localmente, desde el directorio raiz (Install the depencies locally from the root):
+Instalar las dependencias localmente, desde el directorio raiz (Install the depedencies locally from the root):
 - npm install
 
 Create una nueva red para conectar los contenedores de frontend y de backend si la red no exite (Create a new network to connect the frontend and backend containers if the network doesn't exist):
