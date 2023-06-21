@@ -26,6 +26,10 @@ const userSchema = new Schema({
     deleted: {
         type: Boolean,
         required: true
+    },
+    admin: {
+        type: Boolean,
+        required: true
     }
 });
 

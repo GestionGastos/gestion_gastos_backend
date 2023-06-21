@@ -24,7 +24,8 @@ exports.signup = (req, res, next) => {
                 username: req.body.username,
                 email: req.body.email,
                 password: hashedPassword,
-                deleted: false
+                deleted: false,
+                admin: false
             });
 
             return user.save();
@@ -51,7 +52,8 @@ exports.login = (req, res, next) => {
                 _id: user._id,
                 name: user.name,
                 lastname: user.lastname,
-                email: user.email
+                email: user.email,
+                admin: user.admin
             };
             bcrypt.compare(password, user.password)
                 .then(match => {
