@@ -8,6 +8,7 @@ const app = express();
 
 const userRouter = require('./routes/user');
 const budgetRouter = require('./routes/budgeting');
+const adminRouter = require('./routes/admin');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
 
 app.use('/users', userRouter);
 app.use('/budget', budgetRouter);
+app.use('/admin', adminRouter);
 
 mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASSWORD+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority')
     .then(result => {

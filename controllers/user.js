@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const User = require('../models/user');
 const Logged = require('../models/login');
+const Mail = require('../models/email');
 
 let userInfo = {};
 
@@ -162,30 +163,28 @@ exports.delete = (req, res, next) => {
             res.status(200).json({ message: 'success', result: result});
         })
         .catch(err => {
-            res.status(200).json({ error: 'Internal Server Error', message: err});
+            res.status(500).json({ error: 'Internal Server Error', message: err});
         });
 };
 
 exports.send = (req, res, next) => {
-    const email = req.body.email;
+    const to = 'gestion.control.gastos@gmail.com';
+    const from = req.body.email;
     const subject = req.body.subject;
     const message = req.body.message;
 
-    sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-
-    const msg = {
-        to: 'gestion.control.gastos@gmail.com',
-        from: 'gestion.control.gastos@gmail.com',
+    mail = new Mail({
+        to,
+        from,
         subject,
-        text: message,
-        html: message 
-    };
+        message
+    });
 
-    sendgrid.send(msg)
-        .then(() => {
-            res.status(200).json({ message: 'success '});
+    mail.save()
+        .then(result => {
+            res.status(200).json({ message: 'success', result: result});
         })
         .catch(err => {
-            res.status(500).json({ error: "Internal Server Error", message: err })
+            res.status(500).json({ error: 'Internal Server Error', message: err});
         });
 };
