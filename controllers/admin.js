@@ -14,7 +14,7 @@ exports.getUsers = (req, res, next) => {
 exports.enableUser = (req, res, next) => {
     const id = req.body.id;
 
-    User.find({ _id: id})
+    User.findById(id)
         .then(user => {
             user.deleted = false;
 
