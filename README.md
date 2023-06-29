@@ -17,7 +17,7 @@ Create una nueva red para conectar los contenedores de frontend y de backend si 
 - docker network create -d bridge budget-servers-network
 
 Ejecutar docker run para crear el contenedor en windows desde la raiz del proyecto (Execute docker run to create the container on windows from the project root):
-- docker run -d -p 8080:80 --name=budget-backend -v C:\<tu directorio\gestion_gastos_backend:/usr/src/app --network=budget-servers-network budget-backend-server:v1
+- docker run -d -p 8080:80 --name=budget-backend -v C:\<tu directorio\gestion_gastos_backend:/app --network=budget-servers-network budget-backend-server:v1
 
 Para checkear el REST API utilize la url debajo (To ckeck the REST API use the url below):
 - http://localhost:8080/users/
