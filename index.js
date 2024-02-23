@@ -24,9 +24,11 @@ app.use('/users', userRouter);
 app.use('/budget', budgetRouter);
 app.use('/admin', adminRouter);
 
-mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASSWORD+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority')
+
+//mongoose.connect('mongodb+srv://:'+process.env.DB_PASSWORD+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://santiago:' + process.env.DB_PASSWORD + '@nodecompletecluster.lyvn4hm.mongodb.net/budgeting')
     .then(result => {
-        app.listen(80);
+        app.listen(8080);
     })
     .catch(err => {
         throw new Error(err);
