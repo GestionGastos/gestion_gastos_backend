@@ -9,33 +9,38 @@ const Mail = require('../models/email');
 
 let userInfo = {};
 
-exports.health = (req, res, next) => {
-    res.status(200).json({ status: "ok", message: 'Healthy'});
-};
-
 exports.signup = (req, res, next) => {
+    const email = req.body.email;
     const password = req.body.password;
+    
+    User.findOne({email: email})
+        .then(user => {
+            if (user) {
+                return res.status(400).json({error: "Bad Request", message: "User already exists"})
+            }
 
-    bcrypt.hash(password, 12)
-        .then(hashedPassword => {
-            user = new User({
-                name: req.body.name,
-                lastname: req.body.lastname,
-                username: req.body.username,
-                email: req.body.email,
-                password: hashedPassword,
-                deleted: false,
-                admin: false
-            });
-
-            return user.save();
+            bcrypt.hash(password, 12)
+                .then(hashedPassword => {
+                    user = new User({
+                        name: req.body.name,
+                        lastname: req.body.lastname,
+                        username: req.body.username,
+                        email: req.body.email,
+                        password: hashedPassword,
+                        deleted: false,
+                        admin: false
+                    });
+        
+                    return user.save();
+                })
+                .then(result => {
+                    res.status(200).json({message: 'User created', result});
+                })
+                .catch(err => {
+                    res.status(500).json({error: 'Internal Server Error', message: "Error while the user was creating", err});
+                });
         })
-        .then(result => {
-            res.status(200).json({message: 'User created', result});
-        })
-        .catch(err => {
-            res.status(500).json({error: 'Internal Server Error', message: "Error while the user was creating", err});
-        });
+    
 };
 
 exports.login = (req, res, next) => {

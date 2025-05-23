@@ -6,8 +6,9 @@ require('dotenv').config();
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
+const healthCheckRouter = require('./routes/healthCheck');
 const userRouter = require('./routes/user');
 const budgetRouter = require('./routes/budgeting');
 const adminRouter = require('./routes/admin');
@@ -22,15 +23,21 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/healthcheck', healthCheckRouter);
 app.use('/users', userRouter);
 app.use('/budget', budgetRouter);
 app.use('/admin', adminRouter);
 
+const {
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD,
+    DB_HOST
+} = process.env
 
-//mongoose.connect('mongodb+srv://:'+process.env.DB_PASSWORD+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority')
-mongoose.connect('mongodb+srv://santiago:' + process.env.DB_PASSWORD + '@nodecompletecluster.lyvn4hm.mongodb.net/budgeting')
+mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`)
     .then(result => {
-        app.listen(8080);
+        app.listen(port);
     })
     .catch(err => {
         throw new Error(err);
