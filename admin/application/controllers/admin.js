@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const Mail = require('../models/email');
+const User = require('../../../user/domain/models/user');
+const Mail = require('../../../shared/domain/models/email');
 
 exports.getUsers = (req, res, next) => {
     User.find({ admin: false })

@@ -6,9 +6,15 @@ require('dotenv').config();
 
 const app = express();
 
+<<<<<<< Updated upstream:app.js
 const userRouter = require('./routes/user');
 const budgetRouter = require('./routes/budgeting');
 const adminRouter = require('./routes/admin');
+=======
+const port = process.env.PORT || 8080;
+
+const routes = require('./routes');
+>>>>>>> Stashed changes:index.js
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -20,9 +26,13 @@ app.use((req, res, next) => {
     next();
 });
 
+<<<<<<< Updated upstream:app.js
 app.use('/users', userRouter);
 app.use('/budget', budgetRouter);
 app.use('/admin', adminRouter);
+=======
+app.use(routes);
+>>>>>>> Stashed changes:index.js
 
 mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASSWORD+'@'+process.env.DB_HOST+'/'+process.env.DB_NAME+'?retryWrites=true&w=majority')
     .then(result => {

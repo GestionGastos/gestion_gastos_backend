@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 const sendgrid = require('@sendgrid/mail');
 require('dotenv').config();
 
-const User = require('../models/user');
-const Logged = require('../models/login');
-const Mail = require('../models/email');
+const User = require('../../domain/models/user');
+const Logged = require('../../domain/models/login');
+const Mail = require('../../../shared/domain/models/email');
 
 let userInfo = {};
 

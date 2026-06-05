@@ -1,7 +1,7 @@
 const express = require('express');
 
-const budgetingController = require('../controllers/budgeting');
-const auth = require('../middleware/auth');
+const budgetingController = require('../../application/controllers/budgeting');
+const auth = require('../../../middleware/auth');
 
 const router = express.Router();
 
