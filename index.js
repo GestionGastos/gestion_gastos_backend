@@ -9,9 +9,9 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 const healthCheckRouter = require('./routes/healthCheck');
-const userRouter = require('./routes/user');
-const budgetRouter = require('./routes/budgeting');
-const adminRouter = require('./routes/admin');
+const port = process.env.PORT || 8080;
+
+const routes = require('./routes');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -24,9 +24,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/healthcheck', healthCheckRouter);
-app.use('/users', userRouter);
-app.use('/budget', budgetRouter);
-app.use('/admin', adminRouter);
+app.use(routes);
+
 
 const {
     DB_NAME,

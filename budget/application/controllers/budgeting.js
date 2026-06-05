@@ -1,5 +1,5 @@
-const Budget = require('../models/budgeting');
-const User = require('../models/user');
+const Budget = require('../../domain/models/budgeting');
+const User = require('../../../user/domain/models/user');
 
 const _en_months = [
     'January',
