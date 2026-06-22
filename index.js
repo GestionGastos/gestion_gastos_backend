@@ -6,8 +6,6 @@ require('dotenv').config();
 
 const app = express();
 
-const port = process.env.PORT || 8080;
-
 const healthCheckRouter = require('./routes/healthCheck');
 const port = process.env.PORT || 8080;
 
