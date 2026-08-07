@@ -1,18 +1,23 @@
 const express = require('express');
+const { body } = require('express-validator');
 
 const adminController = require('../../application/controllers/admin');
 const auth = require('../../../middleware/auth');
+const isAdmin = require('../../../middleware/isAdmin');
+const validateRequest = require('../../../middleware/validateRequest');
 
 const router = express.Router();
 
-router.get('/users', auth, adminController.getUsers);
+router.use(auth, isAdmin);
 
-router.put('/users/enable', auth, adminController.enableUser);
+router.get('/users', adminController.getUsers);
 
-router.delete('/users/delete', auth, adminController.deleteUser);
+router.put('/users/enable', body('id').isMongoId(), validateRequest, adminController.enableUser);
 
-router.get('/mails', auth, adminController.getMails);
+router.delete('/users/delete', body('id').isMongoId(), validateRequest, adminController.deleteUser);
 
-router.delete('/mails/delete', auth, adminController.deleteMail);
+router.get('/mails', adminController.getMails);
+
+router.delete('/mails/delete', body('id').isMongoId(), validateRequest, adminController.deleteMail);
 
 module.exports = router;

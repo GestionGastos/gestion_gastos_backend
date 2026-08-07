@@ -1,68 +1,76 @@
 const User = require('../../../user/domain/models/user');
 const Mail = require('../../../shared/domain/models/email');
 
-exports.getUsers = (req, res, next) => {
-    User.find({ admin: false })
-        .then(results => {
-            res.status(200).json({ message: 'success', result: results });
-        })
-        .catch(err => {
-            res.status(400).json({ error: 'Internal Server Error', message: err });
-        });
+const toUserResponse = user => ({
+    _id: user._id,
+    name: user.name,
+    lastname: user.lastname,
+    username: user.username,
+    email: user.email,
+    admin: user.admin,
+    deleted: user.deleted
+});
+
+exports.getUsers = async (req, res, next) => {
+    try {
+        const results = await User.find({ admin: false }).select('-password');
+
+        res.status(200).json({ message: 'success', result: results });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error', message: err });
+    }
 };
 
-exports.enableUser = (req, res, next) => {
-    const id = req.body.id;
+exports.enableUser = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.body.id);
 
-    User.findById(id)
-        .then(user => {
-            user.deleted = false;
+        if (!user) {
+            return res.status(404).json({ error: 'Not Found', message: 'User not found' });
+        }
 
-            return user.save();
-        })
-        .then(result => {
-            res.status(200).json({ message: 'success', result: result});
-        })
-        .catch(err => {
-            res.status(500).json({ error: 'Internal Server Error', message: err});
-        });
+        user.deleted = false;
+        const result = await user.save();
+
+        res.status(200).json({ message: 'success', user: toUserResponse(result) });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error', message: err });
+    }
 };
 
-exports.deleteUser = (req, res, next) => {
-    const id = req.body.id;
+exports.deleteUser = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.body.id);
 
-    User.findById(id)
-        .then(user => {
-            user.deleted = true;
-            
-            return user.save();
-        })
-        .then(result => {
-            res.status(200).json({ message: 'success', result: result});
-        })
-        .catch(err => {
-            res.status(500).json({ error: 'Internal Server Error', message: err});
-        });
+        if (!user) {
+            return res.status(404).json({ error: 'Not Found', message: 'User not found' });
+        }
+
+        user.deleted = true;
+        const result = await user.save();
+
+        res.status(200).json({ message: 'success', user: toUserResponse(result) });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error', message: err });
+    }
 };
 
-exports.getMails = (req, res, next) => {
-    Mail.find()
-        .then(results => {
-            res.status(200).json({ message: 'success', result: results });
-        })
-        .catch(err => {
-            res.status(400).json({ error: 'Internal Server Error', message: err });
-        });
+exports.getMails = async (req, res, next) => {
+    try {
+        const results = await Mail.find();
+
+        res.status(200).json({ message: 'success', result: results });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error', message: err });
+    }
 };
 
-exports.deleteMail = (req, res, next) => {
-    const id = req.body.id;
+exports.deleteMail = async (req, res, next) => {
+    try {
+        await Mail.findOneAndRemove({ _id: req.body.id });
 
-    Mail.findOneAndRemove({ _id: id })
-        .then(result => {
-            res.status(200).json({ message: 'success' });
-        })
-        .catch(err => {
-            res.status(400).json({ error: 'Internal Server Error', message: err });
-        });
+        res.status(200).json({ message: 'success' });
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error', message: err });
+    }
 };

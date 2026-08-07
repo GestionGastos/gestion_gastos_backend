@@ -1,29 +1,67 @@
 const jwt = require('jsonwebtoken');
+const Logged = require('../user/domain/models/login');
 
 module.exports = (req, res, next) => {
     const authHeader = req.get('Authorization');
     if (!authHeader) {
-        const error = new Error('Not Authenticated');
-        error.statusCode = 401;
-        throw error;
+        return res.status(401).json({
+            error: 'Unauthorized',
+            message: 'Not authenticated'
+        });
     }
 
-    const token = authHeader.split(' ')[1];
+    const tokenParts = authHeader.split(' ');
+    const token = tokenParts.length === 2 && tokenParts[0] === 'Bearer' ? tokenParts[1] : null;
+
+    if (!token) {
+        return res.status(401).json({
+            error: 'Unauthorized',
+            message: 'Invalid authorization header'
+        });
+    }
+
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({
+            error: 'Internal Server Error',
+            message: 'JWT secret is not configured'
+        });
+    }
+
     let decodedToken;
 
     try {
-        decodedToken = jwt.verify(token, 'somesupersecret');
+        decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
-        err.statusCode = 500;
-        throw err;
+        return res.status(401).json({
+            error: 'Unauthorized',
+            message: 'Invalid or expired token'
+        });
     }
 
     if (!decodedToken) {
-        const error = new Error('Not Authenticated');
-        error.statusCode = 401;
-        throw error;
+        return res.status(401).json({
+            error: 'Unauthorized',
+            message: 'Not authenticated'
+        });
     }
 
-    req.userId = decodedToken.userId;
-    next();
-}
+    Logged.findOne({ token, isLogged: true })
+        .then(logged => {
+            if (!logged) {
+                return res.status(401).json({
+                    error: 'Unauthorized',
+                    message: 'Session is not active'
+                });
+            }
+
+            req.userId = decodedToken.userId;
+            req.token = token;
+            next();
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: 'Internal Server Error',
+                message: err
+            });
+        });
+};

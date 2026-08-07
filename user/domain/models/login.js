@@ -15,6 +15,11 @@ const loggedSchema = new Schema({
     token: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        expires: process.env.JWT_EXPIRES_IN || '1h'
     }
 });
 
