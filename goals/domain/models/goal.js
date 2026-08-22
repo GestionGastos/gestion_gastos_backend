@@ -16,6 +16,10 @@ const GoalSchema = new Schema({
         type: Number,
         required: true
     },
+    current: {
+        type: Number,
+        required: false
+    },
     objective_date: {
         type: Date,
         required: false
@@ -24,7 +28,7 @@ const GoalSchema = new Schema({
         type: String,
         required: true
     },
-    create_at: {
+    created_at: {
         type: Date,
         required: true
     },

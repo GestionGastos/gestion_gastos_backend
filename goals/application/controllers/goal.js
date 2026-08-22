@@ -5,7 +5,7 @@ exports.getGoals = async (req, res, next) => {
     try {
         const goals = await Goal.find({creator: req.userId});
 
-        return goals;
+        res.status(200).json({ message: 'success', goals });
     } catch(err) {
         res.status(500).json({ error: 'Internal Server Error', message: err });
     }
@@ -32,7 +32,7 @@ exports.createGoal = async (req, res, next) => {
 
         return result;
     } catch(err) {
-        res.status(500).json()
+        res.status(500).json({ error: "Internal Server Error", message: err });
     }
 }
 

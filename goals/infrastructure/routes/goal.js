@@ -11,7 +11,20 @@ router.get('/', auth, goalController.getGoals);
 
 router.get('/:id', auth, goalController.getGoal);
 
-router.post('/', auth, goalController.createGoal);
+router.post(
+    '/', 
+    auth, 
+    [
+        body("name").notEmpty(),
+        body("type").notEmpty(),
+        body("value").notEmpty().isNumeric(),
+        body("objective_date").notEmpty().isDate(),
+        body("status").notEmpty(),
+        body("created_at").notEmpty()
+    ],
+    validateRequest,
+    goalController.createGoal
+);
 
 router.put('/:id', auth, goalController.updateGoal);
 
