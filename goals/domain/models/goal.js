@@ -9,7 +9,6 @@ const GoalSchema = new Schema({
     },
     type: {
         type: String,
-        ref: 'GoalType',
         required: true
     },
     value: {
