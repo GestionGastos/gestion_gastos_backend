@@ -9,6 +9,8 @@ const router = express.Router();
 
 router.get('/', auth, goalController.getGoals);
 
+router.get('/budget/', auth, goalController.getCurrentBudgetGoals);
+
 router.get('/:id', auth, goalController.getGoal);
 
 router.post(
@@ -18,7 +20,7 @@ router.post(
         body("name").notEmpty(),
         body("type").notEmpty(),
         body("value").notEmpty().isNumeric(),
-        body("objective_date").notEmpty().isDate(),
+        body("objective_date").isDate(),
         body("status").notEmpty(),
         body("created_at").notEmpty()
     ],

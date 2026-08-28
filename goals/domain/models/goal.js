@@ -11,6 +11,10 @@ const GoalSchema = new Schema({
         type: String,
         required: true
     },
+    subtype: {
+        type: String,
+        required: false
+    },
     value: {
         type: Number,
         required: true
@@ -22,6 +26,10 @@ const GoalSchema = new Schema({
     objective_date: {
         type: Date,
         required: false
+    },
+    month: {
+        type: String,
+        required: false,
     },
     status: {
         type: String,
@@ -38,4 +46,4 @@ const GoalSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Goals', GoalSchema) 
+module.exports = mongoose.model('Goals', GoalSchema);
