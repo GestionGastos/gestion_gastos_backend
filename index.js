@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const app = express();
 
-const port = process.env.PORT || 8080;
+//const port = process.env.PORT || 8080;
 
 const routes = require('./routes');
 
@@ -32,7 +32,7 @@ const {
 
 mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`)
     .then(result => {
-        app.listen(port);
+        //app.listen(port);
     })
     .catch(err => {
         throw new Error(err);
